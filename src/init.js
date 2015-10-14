@@ -6,6 +6,9 @@ var $container = $('.container');
 var $addRockButton = $('.addRock');
 var $addVehicleButton = $('.addVehicle');
 var vehicleSpeed = 4000
+var directionVehicle = function(){
+  return Math.round(Math.random()) === 1 ? 'left' : 'right';
+}
 
 /*-------------------------------------------------------------------*/  
 
@@ -19,7 +22,7 @@ var vehicleSpeed = 4000
     //initialize a new Rock with a random position
     var vehicle = new obstacleMakerFunction(
       $container.height() * Math.random(),
-      $container.width(), vehicleSpeed
+      $container.width(), vehicleSpeed, directionVehicle()
     );
 
     //set vehicle's position
@@ -30,9 +33,16 @@ var vehicleSpeed = 4000
     vehicle.move();
 
     var resetInterval = setInterval(function(){
-      if(vehicle.$obstacleNode.css('left') === '-200px'){
-        vehicle.resetPosition();
-        vehicle.move();
+      if(vehicle.direction === 'left'){
+        if(vehicle.$obstacleNode.css('left') === '-200px'){
+          vehicle.resetPosition();
+          vehicle.move();
+        }
+      } else {
+        if(vehicle.$obstacleNode.css('left') === '1400px'){
+          vehicle.resetPosition();
+          vehicle.move();
+        }
       }
     }, 300);
 
