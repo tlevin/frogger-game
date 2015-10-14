@@ -1,38 +1,63 @@
 $(document).ready(function() {
   window.dancers = [];
 
+/*-----------------------CACHE THE DOM--------------------------------*/  
+var $container = $('.container');
+var $addRockButton = $('.addRock');
+var $addVehicleButton = $('.addVehicle');
+var vehicleSpeed = 4000
+
+/*-------------------------------------------------------------------*/  
+
+  $addVehicleButton.on("click", function(event) {
+    var obstacleMakerFunctionName = $(this).data("vehicle-maker-name");
+
+    // get the maker function for the obstacle we are making
+    var obstacleMakerFunction = window[obstacleMakerFunctionName];
+
+    
+    //initialize a new Rock with a random position
+    var vehicle = new obstacleMakerFunction(
+      $container.height() * Math.random(),
+      $container.width(), vehicleSpeed
+    );
+
+    //set vehicle's position
+    vehicle.setPosition();
+
+    //append rock to the container
+    $container.append(vehicle.$obstacleNode);
+    vehicle.move();
+
+    var resetInterval = setInterval(function(){
+      if(vehicle.$obstacleNode.css('left') === '-200px'){
+        vehicle.resetPosition();
+        vehicle.move();
+      }
+    }, 300);
+
+  });
+
 
   //add a rock to the page
-  $(".addRock").on("click", function(event) {
-    /* This function sets up the click handlers for the create-dancer
-     * buttons on dancefloor.html. You should only need to make one small change to it.
-     * As long as the "data-dancer-maker-function-name" attribute of a
-     * class="addDancerButton" DOM node matches one of the names of the
-     * maker functions available in the global scope, clicking that node
-     * will call the function to make the dancer.
-     */
-
-    /* dancerMakerFunctionName is a string which must match
-     * one of the dancer maker functions available in global scope.
-     * A new object of the given type will be created and added
-     * to the stage.
-     */
+  $addRockButton.on("click", function(event) {
     var obstacleMakerFunctionName = $(this).data("obstacle-maker-name");
 
-    // get the maker function for the kind of dancer we're supposed to make
+    // get the maker function for the obstacle we are making
     var obstacleMakerFunction = window[obstacleMakerFunctionName];
 
     
     //initialize a new Rock with a random position
     var obstacle = new obstacleMakerFunction(
-      $(".container").height() * Math.random(),
-      $(".container").width() * Math.random(),
-      Math.random() * 1000
+      $container.height() * Math.random(),
+      $container.width() * Math.random()
     );
 
     //set Rock's position
     obstacle.setPosition();
-    $('.container').append(obstacle.$obstacleNode);
+
+    //append rock to the container
+    $container.append(obstacle.$obstacleNode);
   });
 });
 

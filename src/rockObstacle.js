@@ -4,4 +4,3 @@ var RockObstacle = function(top, left) {
 
 RockObstacle.prototype = Object.create(Obstacle.prototype);
 RockObstacle.prototype.constructor = RockObstacle;
-
