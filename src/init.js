@@ -7,7 +7,7 @@ var $container = $('.container');
 var $addRockButton = $('.addRock');
 var $addVehicleButton = $('.addVehicle');
 var $addFroggerButton = $('.addFrogger');
-var vehicleSpeed = 4000
+var vehicleSpeed = 8000
 var directionVehicle = function(){
   return Math.round(Math.random()) === 1 ? 'left' : 'right';
 }
@@ -39,6 +39,9 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
 
     //set vehicle's position
     vehicle.setPosition();
+
+    //add Vehicle to window.obstacles array
+    obstacles.push(vehicle);
 
     //append rock to the container
     $container.append(vehicle.$obstacleNode);
@@ -114,35 +117,43 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
 
 
   });
-var checkDistance = function(top, left){
-  var a = Math.abs(top-frogger.top);
-  var b = Math.abs(left-frogger.left);
-  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-}
 /*-------------------------------------------------------------------*/
 /*--------------------Frogger Movement ------------------------------*/
 
-    $('body').keydown(function(event){
-      if(event.which === 37 ){
-        frogger.move('left');
-      } else if (event.which === 38){
-        frogger.move('up');
-      } else if(event.which === 39){
-        frogger.move('right');
-      } else if(event.which === 40){
-        frogger.move('down');
-      }
+  $('body').keydown(function(event){
+    if(event.which === 37 ){
+      frogger.move('left');
+    } else if (event.which === 38){
+      frogger.move('up');
+    } else if(event.which === 39){
+      frogger.move('right');
+    } else if(event.which === 40){
+      frogger.move('down');
+    }
+  });
 
-      for(var i = 0; i < obstacles.length; i++){
-        var distance = checkDistance(obstacles[i].top, obstacles[i].left);
+
+/*-------------------------------------------------------------------*/
+
+/*--------------------Check Collisions ------------------------------*/
+
+  var checkDistance = function(top, left){
+    var a = Math.abs(top-frogger.top);
+    var b = Math.abs(left-frogger.left);
+    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+  }
+
+  var collisionInterval = setInterval(function() {
+    for(var i = 0; i < obstacles.length; i++){
+        var topObstacle = +obstacles[i].$obstacleNode.css('top').slice(0,-2);
+        var leftObstacle = +obstacles[i].$obstacleNode.css('left').slice(0,-2);
+        var distance = checkDistance(topObstacle, leftObstacle);
+
         if(distance < 10){
           alert('Collision!');
         }  
       }
-})
-
-
-
+  }, 10);
 
 
 /*-------------------------------------------------------------------*/
