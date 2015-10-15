@@ -146,7 +146,7 @@ $playAgainButton.on('click', function(){
   });
 
   /*-------------Frogger Movement--------------*/
-  $body.keydown(function(event){
+  $body.keyup(function(event){
     if (frogger.isAlive && !frogger.hasWon && frogger.canStart) {
       if (event.which === 37) {
         frogger.move('left');

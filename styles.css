@@ -100,7 +100,7 @@ body, a:link, a:visited, a:active{
   left: 1050px;
   cursor: default;
   background-color: #AA7939;
-  border-bottom: 3px solid #553100;
+  border: 2px solid #553100;
 }
 .gameover {
   position: absolute; 
