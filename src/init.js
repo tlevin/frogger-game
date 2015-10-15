@@ -22,6 +22,7 @@ var showResult = function(){
     obstacles[i].$obstacleNode.hide();
    $('.playAgain').show();
    $('.menubar').off();
+   clearInterval(nightmareMode);
   }
 };
 $('.playAgain').on('click', function(){
@@ -92,7 +93,18 @@ var makeCar = function(){
     }, 300);
 }
 
+  var currentCount = 9;
+  var nightmareMode;
+  var countDown = setInterval(function(){
 
+    $('.countdown').text(''+currentCount);
+    currentCount--;
+    console.log(currentCount);
+    if(currentCount === -1){
+      clearInterval(countDown);
+      $('.countdown').delay(1000).hide()
+    }
+  }, 1000)
   var initialCars = setInterval(function(){
     makeCar()
     countCars++;
@@ -107,6 +119,12 @@ var makeCar = function(){
 /*--------------------Add Vehicle Instance--------------------------*/
 
   $addVehicleButton.on("click", makeCar);
+
+  $('.nightmareMode').on('click', function(){
+    nightmareMode = setInterval(function(){
+      makeCar()
+    }, 500);
+  });
 
 /*-------------------------------------------------------------------*/ 
 
