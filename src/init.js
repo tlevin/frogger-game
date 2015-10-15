@@ -33,6 +33,7 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
       vehicle.top = leftStartPositions[Math.floor(Math.random()*6)];
 
     } else {
+      vehicle.$obstacleNode.addClass('flipCar')
       vehicle.left = -200;
       vehicle.top = rightStartPositions[Math.floor(Math.random()*7)];
     }
@@ -149,7 +150,7 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
         var leftObstacle = +obstacles[i].$obstacleNode.css('left').slice(0,-2);
         var distance = checkDistance(topObstacle, leftObstacle);
 
-        if(distance < 10){
+        if(distance < 30){
           alert('Collision!');
         }  
       }

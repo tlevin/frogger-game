@@ -1,6 +1,8 @@
 var Frogger = function(top, left) {
   Obstacle.call(this, top, left);
   this.$obstacleNode.addClass('frogger');
+  this.left = left;
+  this.top = top;
 };
 
 Frogger.prototype = Object.create(Obstacle.prototype);

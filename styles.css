@@ -27,20 +27,27 @@ body, a:link, a:visited, a:active{
 .title{
   background-color: #777;
 }
-.obstacle{
-  border:10px solid red;
-  border-radius:10px;
+.rock{
+  height: 40px;
+  width: 40px;
+  background-image: url('img/rock.png');
   position:absolute;
 }
 
 .vehicle{
-  border:10px solid blue;
-  border-radius:10px;
+ height: 40px;
+  width: 80px;
+  background-image: url('img/car.gif');
   position:absolute;
 }
 
 .frogger {
-  border:10px solid green;
-  border-radius:20px;
   position:absolute;
+  height: 37px;
+  width: 40px;
+  background-image: url('img/frogger.gif');
+}
+.flipCar {
+  transform: scaleX(-1);
+  filter: FlipH;
 }
