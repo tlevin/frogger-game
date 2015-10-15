@@ -2,13 +2,14 @@ $(document).ready(function() {
   window.obstacles = [];
   window.frogger;
   window.frogWin = ['img/frogwin1.gif', 'img/frogwin2.gif', 'img/frogwin3.gif', 'img/frogwin4.gif'];
+  var countCars = 0;
 
 /*-----------------------CACHE THE DOM--------------------------------*/  
 var $container = $('.container');
 var $addRockButton = $('.addRock');
 var $addVehicleButton = $('.addVehicle');
 var $addFroggerButton = $('.addFrogger');
-var vehicleSpeed = 8000;
+var vehicleSpeed = Math.round(Math.random()*3000 + 5000);
 var directionVehicle = function(){
   return Math.round(Math.random()) === 1 ? 'left' : 'right';
 };
@@ -16,13 +17,16 @@ var leftStartPositions = [30, 75, 500, 55];
 var rightStartPositions = [125,175,625, 650];
 var showResult = function(){
    $('.resultWindow').show();
+   $('.topbar').hide();
    for(var i = 0; i < obstacles.length; i++){
     obstacles[i].$obstacleNode.hide();
    $('.playAgain').show();
    $('.menubar').off();
   }
 };
-
+$('.playAgain').on('click', function(){
+    window.location.reload()
+   });
 var gameOver = function(){
   showResult();
   $('.gameover.lose').show();
@@ -48,25 +52,17 @@ var randomRockPosition = function() {
   }
 };
 
-/*-------------------------------------------------------------------*/
-
-/*--------------------Add Vehicle Instance--------------------------*/
-
-  $addVehicleButton.on("click", function(event) {
-    var obstacleMakerFunctionName = $(this).data("vehicle-maker-name");
-
-    // get the maker function for the obstacle we are making
-    var obstacleMakerFunction = window[obstacleMakerFunctionName];
-    
-    //initialize a new Rock with a random position
-    var vehicle = new obstacleMakerFunction(
+var makeCar = function(){
+   var vehicle = new Vehicle(
       $container.height() * Math.random(),
-      $container.width()*Math.random(), vehicleSpeed, directionVehicle()
+      Math.random()*400, vehicleSpeed, directionVehicle()
     );
     if(vehicle.direction === 'left'){
+      vehicle.left = Math.random()*700 + 500
       vehicle.top = leftStartPositions[Math.floor(Math.random()*leftStartPositions.length)];
 
     } else {
+      vehicle.left = Math.random()*700
       vehicle.$obstacleNode.addClass('flipCar');
       vehicle.top = rightStartPositions[Math.floor(Math.random()*rightStartPositions.length)];
     }
@@ -94,8 +90,23 @@ var randomRockPosition = function() {
         }
       }
     }, 300);
+}
 
-  });
+
+  var initialCars = setInterval(function(){
+    makeCar()
+    countCars++;
+    if(countCars > 30){
+      frogger.canStart = true;
+      clearInterval(initialCars);
+    }
+  }, 333);
+
+/*-------------------------------------------------------------------*/
+
+/*--------------------Add Vehicle Instance--------------------------*/
+
+  $addVehicleButton.on("click", makeCar);
 
 /*-------------------------------------------------------------------*/ 
 
@@ -143,7 +154,7 @@ var randomRockPosition = function() {
 /*--------------------Frogger Movement ------------------------------*/
 
   $('body').keydown(function(event){
-    if (frogger.isAlive && !frogger.hasWon) {
+    if (frogger.isAlive && !frogger.hasWon && frogger.canStart) {
       if(event.which === 37 ){
         frogger.move('left');
       } else if (event.which === 38){

@@ -127,6 +127,7 @@ body, a:link, a:visited, a:active{
   left: 475px;
   text-align: center;
   border-radius: 50px;
+  cursor: pointer;
 }
 .frogWin {
   position: absolute;
