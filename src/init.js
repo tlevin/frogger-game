@@ -1,5 +1,6 @@
 $(document).ready(function() {
-  window.dancers = [];
+  window.obstacles = [];
+  window.frogger;
 
 /*-----------------------CACHE THE DOM--------------------------------*/  
 var $container = $('.container');
@@ -80,7 +81,7 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
 
     //set Rock's position
     obstacle.setPosition();
-
+    obstacles.push(obstacle);
     //append rock to the container
     $container.append(obstacle.$obstacleNode);
   });
@@ -99,7 +100,7 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
 
     
     //initialize Frogger
-    var frogger = new obstacleMakerFunction(750, 600);
+   frogger = new obstacleMakerFunction(750, 600);
 
     //set Frogger's position
     frogger.setPosition();
@@ -108,6 +109,17 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
     $container.append(frogger.$obstacleNode);
     $addFroggerButton.toggle();
 
+
+
+
+
+  });
+var checkDistance = function(top, left){
+  var a = Math.abs(top-frogger.top);
+  var b = Math.abs(left-frogger.left);
+  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+}
+/*-------------------------------------------------------------------*/
 /*--------------------Frogger Movement ------------------------------*/
 
     $('body').keydown(function(event){
@@ -121,10 +133,12 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
         frogger.move('down');
       }
 
-  // left 37 
-//up 38
-//right 39
-//down 40
+      for(var i = 0; i < obstacles.length; i++){
+        var distance = checkDistance(obstacles[i].top, obstacles[i].left);
+        if(distance < 10){
+          alert('Collision!');
+        }  
+      }
 })
 
 
@@ -132,13 +146,6 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
 
 
 /*-------------------------------------------------------------------*/
-
-
-
-  });
-
-/*-------------------------------------------------------------------*/
-
 
 
 
