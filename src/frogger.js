@@ -4,6 +4,7 @@ var Frogger = function(top, left) {
   this.left = left;
   this.top = top;
   this.isAlive = true;
+  this.hasWon = false;
 };
 
 Frogger.prototype = Object.create(Obstacle.prototype);

@@ -1,6 +1,7 @@
 $(document).ready(function() {
   window.obstacles = [];
   window.frogger;
+  window.frogWin = ['img/frogwin1.gif', 'img/frogwin2.gif', 'img/frogwin3.gif', 'img/frogwin4.gif']
 
 /*-----------------------CACHE THE DOM--------------------------------*/  
 var $container = $('.container');
@@ -14,14 +15,20 @@ var directionVehicle = function(){
 var leftStartPositions = [30, 75, 500, 55];
 var rightStartPositions = [125,175,625, 650];
 var gameOver = function(){
-  $('.gameover').show();
+  $('.gameover.lose').show();
   for(var i = 0; i < obstacles.length; i++){
     obstacles[i].$obstacleNode.stop();
   }
   frogger.$obstacleNode.addClass('spin');
   frogger.isAlive = false;
 }
-
+var gameWon = function(){
+  $('.gameover.win').show();
+  $('.frogWin').css({
+    'background-image': 'url(' + frogWin[Math.floor(Math.random()*frogWin.length)] + ')'
+  })
+  frogger.hasWon = true;
+}
 var randomRockPosition = function() {
   var topOrBottom = Math.round(Math.random()) === 1 ? 1 : 0;
   //top condition
@@ -111,35 +118,23 @@ var randomRockPosition = function() {
 /*-------------------------------------------------------------------*/
 
 /*--------------------Add Frogger------------------------------*/ 
+
   
-  //add Frogger to the page
-  $addFroggerButton.on("click", function(event) {
-    var obstacleMakerFunctionName = $(this).data("frogger-maker-name");
+  //initialize Frogger
+ frogger = new Frogger(730, 600);
 
-    // get the maker function for the obstacle we are making
-    var obstacleMakerFunction = window[obstacleMakerFunctionName];
+  //set Frogger's position
+  frogger.setPosition();
 
-    
-    //initialize Frogger
-   frogger = new obstacleMakerFunction(750, 600);
-
-    //set Frogger's position
-    frogger.setPosition();
-
-    //append frogger to the container
-    $container.append(frogger.$obstacleNode);
-    $addFroggerButton.toggle();
+  //append frogger to the container
+  $container.append(frogger.$obstacleNode);
 
 
-
-
-
-  });
 /*-------------------------------------------------------------------*/
 /*--------------------Frogger Movement ------------------------------*/
 
-  $('body').keyup(function(event){
-    if (frogger.isAlive) {
+  $('body').keydown(function(event){
+    if (frogger.isAlive && !frogger.hasWon) {
       if(event.which === 37 ){
         frogger.move('left');
       } else if (event.which === 38){
@@ -156,8 +151,8 @@ var randomRockPosition = function() {
         gameOver();
       }
 
-      if(frogger.top === 0){
-        $('.gameover.win').show();
+      if(frogger.top < 10 && !frogger.hasWon){
+        gameWon();
       }
     }
   });

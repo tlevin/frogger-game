@@ -1,5 +1,7 @@
 body, html{
-  height:100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 body{
   margin: 0px;
@@ -10,9 +12,20 @@ body, a:link, a:visited, a:active{
   color: lightblue;
 }
 
+.clearRight {
+  height: 1000px;
+  width: 500px;
+  position: absolute;
+  left: 1200px;
+  top: 0;
+  background-color:#444;
+  margin: 0;
+  z-index: 1;
+}
+
 .container {
   height: 750px;
-  width: 100%;
+  width: 1200px;
   background-image: url('img/gamebackground.jpg');
 }
 
@@ -22,7 +35,7 @@ body, a:link, a:visited, a:active{
 }
 .topbar{
   height:32px;
-  width: 100%;
+  width: 1200px;
   background-image: url('img/finish.png');
   transform: scale(1, 1.25);
 }
@@ -56,7 +69,7 @@ body, a:link, a:visited, a:active{
 .menubar {
   position: absolute;
   top: 735px;
-  width: 100%;
+  width: 1200px;
   height: 32px;
   transform: scale(1,2.2);
   background-image: url('img/finish.png');
@@ -81,6 +94,11 @@ body, a:link, a:visited, a:active{
   font-size: 72px;
   color: lightblue;
   display: none;
+}
+.frogWin {
+  position: relative;
+  width: 200px;
+  height: 200px;
 }
 
 .spin {
