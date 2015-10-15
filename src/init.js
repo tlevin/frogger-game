@@ -1,34 +1,43 @@
 $(document).ready(function() {
   window.obstacles = [];
   window.frogger;
-  window.frogWin = ['img/frogwin1.gif', 'img/frogwin2.gif', 'img/frogwin3.gif', 'img/frogwin4.gif']
+  window.frogWin = ['img/frogwin1.gif', 'img/frogwin2.gif', 'img/frogwin3.gif', 'img/frogwin4.gif'];
 
 /*-----------------------CACHE THE DOM--------------------------------*/  
 var $container = $('.container');
 var $addRockButton = $('.addRock');
 var $addVehicleButton = $('.addVehicle');
 var $addFroggerButton = $('.addFrogger');
-var vehicleSpeed = 8000
+var vehicleSpeed = 8000;
 var directionVehicle = function(){
   return Math.round(Math.random()) === 1 ? 'left' : 'right';
-}
+};
 var leftStartPositions = [30, 75, 500, 55];
 var rightStartPositions = [125,175,625, 650];
-var gameOver = function(){
-  $('.gameover.lose').show();
-  for(var i = 0; i < obstacles.length; i++){
-    obstacles[i].$obstacleNode.stop();
+var showResult = function(){
+   $('.resultWindow').show();
+   for(var i = 0; i < obstacles.length; i++){
+    obstacles[i].$obstacleNode.hide();
+   $('.playAgain').show();
+   $('.menubar').off();
   }
+};
+
+var gameOver = function(){
+  showResult();
+  $('.gameover.lose').show();
+  $('.menubar').hide();
   frogger.$obstacleNode.addClass('spin');
   frogger.isAlive = false;
-}
+};
 var gameWon = function(){
+  showResult();
   $('.gameover.win').show();
   $('.frogWin').css({
     'background-image': 'url(' + frogWin[Math.floor(Math.random()*frogWin.length)] + ')'
   })
   frogger.hasWon = true;
-}
+};
 var randomRockPosition = function() {
   var topOrBottom = Math.round(Math.random()) === 1 ? 1 : 0;
   //top condition
@@ -37,7 +46,7 @@ var randomRockPosition = function() {
   } else {
     return 200 * Math.random() + 480;
   }
-}
+};
 
 /*-------------------------------------------------------------------*/
 
@@ -145,8 +154,8 @@ var randomRockPosition = function() {
         frogger.move('down');
       }
 
-      if((frogger.top < 480 && frogger.left < 255 && frogger.top > 240) || 
-        (frogger.top < 480 && frogger.top > 240 && frogger.left < 735 && frogger.left > 345) || 
+      if((frogger.top < 480 && frogger.left < 255 && frogger.top > 240) ||
+        (frogger.top < 480 && frogger.top > 240 && frogger.left < 735 && frogger.left > 345) ||
         (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) {
         gameOver();
       }
@@ -176,7 +185,7 @@ var randomRockPosition = function() {
 
         if(distance < 30){
           gameOver();
-        } 
+        }
       }
   }, 30);
 

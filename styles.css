@@ -23,6 +23,12 @@ body, a:link, a:visited, a:active{
   margin: 0;
   z-index: 1;
 }
+.resultWindow {
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  display: none;
+}
 
 .container {
   height: 750px;
@@ -52,6 +58,7 @@ body, a:link, a:visited, a:active{
 
 .frogger {
   position:absolute;
+  z-index: 1;
   height: 37px;
   width: 40px;
   background-image: url('img/frogger.gif');
@@ -90,30 +97,45 @@ body, a:link, a:visited, a:active{
   border-bottom: 3px solid #553100;
 }
 .gameover {
-  position: absolute;
-  top: 400px;
-  left: 350px;
+  position: absolute; 
   font-size: 72px;
   color: red;
   display: none;
 }
 
-.gameover.win {
+.win {
   position: absolute;
   top: 400px;
-  left: 350px;
+  left: 440px;
   font-size: 72px;
   color: lightblue;
   display: none;
 }
+.lose {
+  top: 400px;
+  left: 400px;
+}
+
+.playAgain {
+  padding: 20px;
+  background-color: black;
+  font-size: 40px;
+  color: white;
+  display: inline-block;
+  position: absolute;
+  top: 500px;
+  left: 475px;
+  text-align: center;
+  border-radius: 50px;
+}
 .frogWin {
-  position: relative;
+  position: absolute;
+  top: 200px;
+  left: 500px;
   width: 200px;
   height: 200px;
 }
-span {
-  font-weight: bold;
-}
+
 
 .spin {
     -webkit-animation-name: spin;
