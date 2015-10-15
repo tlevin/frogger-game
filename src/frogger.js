@@ -10,16 +10,16 @@ Frogger.prototype.constructor = Frogger;
 
 Frogger.prototype.move = function(direction) {
   if (direction === 'up') {
-    this.top -= 25;
+    this.top -= 15;
     this.setPosition();
   } else if (direction === 'left') {
-    this.left -= 25;
+    this.left -= 15;
     this.setPosition();
   } else if (direction === 'right') {
-    this.left += 25;
+    this.left += 15;
     this.setPosition();
   } else if (direction === 'down') {
-    this.top += 25;
+    this.top += 15;
     this.setPosition();
   }
 };

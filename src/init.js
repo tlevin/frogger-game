@@ -138,9 +138,9 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
 
 /*--------------------Check Collisions ------------------------------*/
 
-  var checkDistance = function(top, left){
-    var a = Math.abs(top-frogger.top);
-    var b = Math.abs(left-frogger.left);
+  window.checkDistance = function(top, left){
+    var a = Math.abs(top-frogger.centerTop);
+    var b = Math.abs(left-frogger.centerLeft);
     return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
   }
 
@@ -148,13 +148,13 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
     for(var i = 0; i < obstacles.length; i++){
         var topObstacle = +obstacles[i].$obstacleNode.css('top').slice(0,-2);
         var leftObstacle = +obstacles[i].$obstacleNode.css('left').slice(0,-2);
-        var distance = checkDistance(topObstacle, leftObstacle);
+        var distance = checkDistance(topObstacle + 30, leftObstacle + 20);
 
         if(distance < 30){
-          alert('Collision!');
+          console.log('collision');
         }  
       }
-  }, 10);
+  }, 30);
 
 
 /*-------------------------------------------------------------------*/
