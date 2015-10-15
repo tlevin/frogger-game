@@ -11,8 +11,8 @@ var vehicleSpeed = 8000
 var directionVehicle = function(){
   return Math.round(Math.random()) === 1 ? 'left' : 'right';
 }
-var leftStartPositions = [100, 200, 300, 400, 500, 600];
-var rightStartPositions = [50,150,250,350,450,550, 650];
+var leftStartPositions = [30, 75, 500, 55];
+var rightStartPositions = [125,175,625, 650];
 
 /*-------------------------------------------------------------------*/  
 
@@ -30,12 +30,12 @@ var rightStartPositions = [50,150,250,350,450,550, 650];
       $container.width(), vehicleSpeed, directionVehicle()
     );
     if(vehicle.direction === 'left'){
-      vehicle.top = leftStartPositions[Math.floor(Math.random()*6)];
+      vehicle.top = leftStartPositions[Math.floor(Math.random()*leftStartPositions.length)];
 
     } else {
       vehicle.$obstacleNode.addClass('flipCar')
       vehicle.left = -200;
-      vehicle.top = rightStartPositions[Math.floor(Math.random()*7)];
+      vehicle.top = rightStartPositions[Math.floor(Math.random()*rightStartPositions.length)];
     }
 
     //set vehicle's position
