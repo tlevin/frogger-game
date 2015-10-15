@@ -38,6 +38,7 @@ var gameOver = function(){
 var gameWon = function(){
   showResult();
   $('.gameover.win').show();
+  $('.menubar').hide();
   $('.frogWin').css({
     'background-image': 'url(' + frogWin[Math.floor(Math.random()*frogWin.length)] + ')'
   })
