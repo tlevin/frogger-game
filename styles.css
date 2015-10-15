@@ -142,8 +142,6 @@ body, a:link, a:visited, a:active{
   width: 200px;
   height: 200px;
 }
-
-
 .spin {
     -webkit-animation-name: spin;
     -webkit-animation-duration: 2000ms;

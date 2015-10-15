@@ -1,52 +1,78 @@
 $(document).ready(function() {
+/*------------------------------------GLOBAL VARIABLES----------------------------------*/
   window.obstacles = [];
   window.frogger;
   window.frogWin = ['img/frogwin1.gif', 'img/frogwin2.gif', 'img/frogwin3.gif', 'img/frogwin4.gif'];
-  var countCars = 0;
+  window.checkDistance = function(top, left){
+    var a = Math.abs(top-frogger.centerTop);
+    var b = Math.abs(left-frogger.centerLeft);
+    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+  };
 
-/*-----------------------CACHE THE DOM--------------------------------*/  
+/*------------------------------------CACHE THE DOM-------------------------------------*/
+var $body = $('body');
 var $container = $('.container');
 var $addRockButton = $('.addRock');
 var $addVehicleButton = $('.addVehicle');
 var $addFroggerButton = $('.addFrogger');
-var vehicleSpeed = Math.round(Math.random()*3000 + 5000);
+var $playAgainButton = $('.playAgain')
+var $resultWindow = $('.resultWindow');
+var $topBar = $('.topbar');
+var $menuBar = $('.menubar');
+var $gameOverScreen = $('.gameover.lose');
+var $gameWonScreen = $('.gameover.win');
+var $frogGif = ('.frogWin');
+var $countdown = $('.countdown');
+var $nightmareMode = $('.nightmareMode');
+
+/*------------------------------------VARIABLE DEFINITIONS-------------------------------*/
+
+var leftStartPositions = [30, 75, 500, 55];
+var rightStartPositions = [125,175,625, 650];
+var currentCount = 9;
+var countCars = 0;
+var nightmareMode;
+
+/*------------------------------------FUNCTIONS-----------------------------------------*/
 var directionVehicle = function(){
   return Math.round(Math.random()) === 1 ? 'left' : 'right';
 };
-var leftStartPositions = [30, 75, 500, 55];
-var rightStartPositions = [125,175,625, 650];
+
+var vehicleSpeed = function() {
+  return Math.round(Math.random() * 3000 + 5000);
+};
+
 var showResult = function(){
-   $('.resultWindow').show();
-   $('.topbar').hide();
-   for(var i = 0; i < obstacles.length; i++){
+  $resultWindow.show();
+  $topBar.hide();
+  for(var i = 0; i < obstacles.length; i++){
     obstacles[i].$obstacleNode.hide();
-   $('.playAgain').show();
-   $('.menubar').off();
-   clearInterval(nightmareMode);
+    $playAgainButton.show();
+    $menuBar.off();
+    clearInterval(nightmareMode);
   }
 };
-$('.playAgain').on('click', function(){
-    window.location.reload()
-   });
+
 var gameOver = function(){
   showResult();
-  $('.gameover.lose').show();
-  $('.menubar').hide();
+  $gameOverScreen.show();
+  $menuBar.hide();
   frogger.$obstacleNode.addClass('spin');
   frogger.isAlive = false;
 };
+
 var gameWon = function(){
   showResult();
-  $('.gameover.win').show();
-  $('.menubar').hide();
-  $('.frogWin').css({
+  $gameWonScreen.show();
+  $menuBar.hide();
+  $frogGif.css({
     'background-image': 'url(' + frogWin[Math.floor(Math.random()*frogWin.length)] + ')'
   })
   frogger.hasWon = true;
 };
+
 var randomRockPosition = function() {
   var topOrBottom = Math.round(Math.random()) === 1 ? 1 : 0;
-  //top condition
   if (topOrBottom) {
     return 200 * Math.random() + 40;
   } else {
@@ -55,126 +81,74 @@ var randomRockPosition = function() {
 };
 
 var makeCar = function(){
-   var vehicle = new Vehicle(
-      $container.height() * Math.random(),
-      Math.random()*400, vehicleSpeed, directionVehicle()
-    );
+  var vehicle = new Vehicle(
+    $container.height() * Math.random(),
+    Math.random()*400, vehicleSpeed(), directionVehicle()
+  );
+
+  if(vehicle.direction === 'left'){
+    vehicle.left = Math.random()*700 + 500
+    vehicle.top = leftStartPositions[Math.floor(Math.random()*leftStartPositions.length)];
+  } else {
+    vehicle.left = Math.random()*700
+    vehicle.$obstacleNode.addClass('flipCar');
+    vehicle.top = rightStartPositions[Math.floor(Math.random()*rightStartPositions.length)];
+  }
+
+  vehicle.setPosition();
+  obstacles.push(vehicle);
+  $container.append(vehicle.$obstacleNode);
+  vehicle.move();
+
+  var resetInterval = setInterval(function(){
     if(vehicle.direction === 'left'){
-      vehicle.left = Math.random()*700 + 500
-      vehicle.top = leftStartPositions[Math.floor(Math.random()*leftStartPositions.length)];
-
-    } else {
-      vehicle.left = Math.random()*700
-      vehicle.$obstacleNode.addClass('flipCar');
-      vehicle.top = rightStartPositions[Math.floor(Math.random()*rightStartPositions.length)];
-    }
-
-    //set vehicle's position
-    vehicle.setPosition();
-
-    //add Vehicle to window.obstacles array
-    obstacles.push(vehicle);
-
-    //append rock to the container
-    $container.append(vehicle.$obstacleNode);
-    vehicle.move();
-
-    var resetInterval = setInterval(function(){
-      if(vehicle.direction === 'left'){
-        if(vehicle.$obstacleNode.css('left') === '-200px'){
-          vehicle.resetPosition();
-          vehicle.move();
-        }
-      } else {
-        if(vehicle.$obstacleNode.css('left') === '1400px'){
-          vehicle.resetPosition();
-          vehicle.move();
-        }
+      if(vehicle.$obstacleNode.css('left') === '-200px'){
+        vehicle.resetPosition();
+        vehicle.move();
       }
-    }, 300);
-}
-
-  var currentCount = 9;
-  var nightmareMode;
-  var countDown = setInterval(function(){
-
-    $('.countdown').text(''+currentCount);
-    currentCount--;
-    console.log(currentCount);
-    if(currentCount === -1){
-      clearInterval(countDown);
-      $('.countdown').delay(1000).hide()
+    } else {
+      if(vehicle.$obstacleNode.css('left') === '1400px'){
+        vehicle.resetPosition();
+        vehicle.move();
+      }
     }
-  }, 1000)
-  var initialCars = setInterval(function(){
-    makeCar()
-    countCars++;
-    if(countCars > 30){
-      frogger.canStart = true;
-      clearInterval(initialCars);
-    }
-  }, 333);
+  }, 300);
+};
 
-/*-------------------------------------------------------------------*/
+/*------------------------------------EVENT HANDLERS------------------------------------*/
 
-/*--------------------Add Vehicle Instance--------------------------*/
+$playAgainButton.on('click', function(){
+  window.location.reload()
+});
 
+  /*------------Add Vehicle Button--------------*/
   $addVehicleButton.on("click", makeCar);
 
-  $('.nightmareMode').on('click', function(){
+
+  /*------------Nightmare Mode Button-----------*/
+  $nightmareMode.on('click', function(){
     nightmareMode = setInterval(function(){
       makeCar()
     }, 500);
   });
 
-/*-------------------------------------------------------------------*/ 
-
-/*--------------------Add Rock Instance------------------------------*/  
-
-
-  //add a rock to the page
+  /*------------Add Rock Button-----------------*/
   $addRockButton.on("click", function(event) {
-    var obstacleMakerFunctionName = $(this).data("obstacle-maker-name");
-
-    // get the maker function for the obstacle we are making
-    var obstacleMakerFunction = window[obstacleMakerFunctionName];
-
-    
-    //initialize a new Rock with a random position
-    var obstacle = new obstacleMakerFunction(
+    var rockObstacle = new RockObstacle(
       randomRockPosition(),
       $container.width() * Math.random()
     );
 
-    //set Rock's position
-    obstacle.setPosition();
-    obstacles.push(obstacle);
+    rockObstacle.setPosition();
+    obstacles.push(rockObstacle);
     //append rock to the container
-    $container.append(obstacle.$obstacleNode);
+    $container.append(rockObstacle.$obstacleNode);
   });
 
-
-/*-------------------------------------------------------------------*/
-
-/*--------------------Add Frogger------------------------------*/ 
-
-  
-  //initialize Frogger
- frogger = new Frogger(730, 600);
-
-  //set Frogger's position
-  frogger.setPosition();
-
-  //append frogger to the container
-  $container.append(frogger.$obstacleNode);
-
-
-/*-------------------------------------------------------------------*/
-/*--------------------Frogger Movement ------------------------------*/
-
-  $('body').keydown(function(event){
+  /*-------------Frogger Movement--------------*/
+  $body.keydown(function(event){
     if (frogger.isAlive && !frogger.hasWon && frogger.canStart) {
-      if(event.which === 37 ){
+      if (event.which === 37) {
         frogger.move('left');
       } else if (event.which === 38){
         frogger.move('up');
@@ -186,42 +160,55 @@ var makeCar = function(){
 
       if((frogger.top < 480 && frogger.left < 255 && frogger.top > 240) ||
         (frogger.top < 480 && frogger.top > 240 && frogger.left < 735 && frogger.left > 345) ||
-        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) {
-        gameOver();
-      }
+        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) { gameOver(); }
 
-      if(frogger.top < 10 && !frogger.hasWon){
-        gameWon();
-      }
+      if(frogger.top < 10 && !frogger.hasWon) { gameWon(); }
     }
   });
 
 
-/*-------------------------------------------------------------------*/
 
-/*--------------------Check Collisions ------------------------------*/
+/*------------------------------------APP START-----------------------------------------*/
 
-  window.checkDistance = function(top, left){
-    var a = Math.abs(top-frogger.centerTop);
-    var b = Math.abs(left-frogger.centerLeft);
-    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-  };
+  /*------------Add Frogger--------------*/
+  //initialize Frogger
+  frogger = new Frogger(730, 600);
+  frogger.setPosition();
+  $container.append(frogger.$obstacleNode);
 
+
+  /*------------Set Intervals------------*/
+  //countdown timer
+  var countDown = setInterval(function(){
+    $countdown.text(''+currentCount);
+    currentCount--;
+    console.log(currentCount);
+    if(currentCount === -1){
+      clearInterval(countDown);
+      $countdown.delay(1000).hide()
+    }
+  }, 1000)
+
+  //initialize 30 cars to game
+  var initialCars = setInterval(function(){
+    makeCar()
+    countCars++;
+    if(countCars > 30){
+      frogger.canStart = true;
+      clearInterval(initialCars);
+    }
+  }, 333);
+
+  //Collision Detection
   var collisionInterval = setInterval(function() {
-    for(var i = 0; i < obstacles.length; i++){
-        var topObstacle = +obstacles[i].$obstacleNode.css('top').slice(0,-2);
-        var leftObstacle = +obstacles[i].$obstacleNode.css('left').slice(0,-2);
-        var distance = checkDistance(topObstacle + 30, leftObstacle + 20);
+  for (var i = 0; i < obstacles.length; i++) {
+    var topObstacle = +obstacles[i].$obstacleNode.css('top').slice(0,-2);
+    var leftObstacle = +obstacles[i].$obstacleNode.css('left').slice(0,-2);
+    var distance = checkDistance(topObstacle + 30, leftObstacle + 20);
 
-        if(distance < 30){
-          gameOver();
-        }
-      }
+    if(distance < 30){ gameOver(); }
+
+    }
   }, 30);
-
-
-/*-------------------------------------------------------------------*/
-
-
-
+/*---------------------------------------END--------------------------------------------*/
 });

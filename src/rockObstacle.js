@@ -1,3 +1,4 @@
+/*------------------------------------ROCK SUBCLASS-------------------------------------*/
 var RockObstacle = function(top, left) {
   Obstacle.call(this, top, left);
   this.$obstacleNode.addClass('rock');
