@@ -14,9 +14,9 @@ var directionVehicle = function(){
 var leftStartPositions = [30, 75, 500, 55];
 var rightStartPositions = [125,175,625, 650];
 
-/*-------------------------------------------------------------------*/  
+/*-------------------------------------------------------------------*/
 
-/*--------------------Add Vehicle Instance--------------------------*/  
+/*--------------------Add Vehicle Instance--------------------------*/
 
   $addVehicleButton.on("click", function(event) {
     var obstacleMakerFunctionName = $(this).data("vehicle-maker-name");
@@ -27,14 +27,13 @@ var rightStartPositions = [125,175,625, 650];
     //initialize a new Rock with a random position
     var vehicle = new obstacleMakerFunction(
       $container.height() * Math.random(),
-      $container.width(), vehicleSpeed, directionVehicle()
+      $container.width()*Math.random(), vehicleSpeed, directionVehicle()
     );
     if(vehicle.direction === 'left'){
       vehicle.top = leftStartPositions[Math.floor(Math.random()*leftStartPositions.length)];
 
     } else {
-      vehicle.$obstacleNode.addClass('flipCar')
-      vehicle.left = -200;
+      vehicle.$obstacleNode.addClass('flipCar');
       vehicle.top = rightStartPositions[Math.floor(Math.random()*rightStartPositions.length)];
     }
 
@@ -142,7 +141,7 @@ var rightStartPositions = [125,175,625, 650];
     var a = Math.abs(top-frogger.centerTop);
     var b = Math.abs(left-frogger.centerLeft);
     return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-  }
+  };
 
   var collisionInterval = setInterval(function() {
     for(var i = 0; i < obstacles.length; i++){
@@ -152,7 +151,7 @@ var rightStartPositions = [125,175,625, 650];
 
         if(distance < 30){
           console.log('collision');
-        }  
+        } 
       }
   }, 30);
 
