@@ -13,6 +13,24 @@ var directionVehicle = function(){
 }
 var leftStartPositions = [30, 75, 500, 55];
 var rightStartPositions = [125,175,625, 650];
+var gameOver = function(){
+  $('.gameover').show();
+  for(var i = 0; i < obstacles.length; i++){
+    obstacles[i].$obstacleNode.stop();
+  }
+  frogger.$obstacleNode.addClass('spin');
+  frogger.isAlive = false;
+}
+
+var randomRockPosition = function() {
+  var topOrBottom = Math.round(Math.random()) === 1 ? 1 : 0;
+  //top condition
+  if (topOrBottom) {
+    return 200 * Math.random() + 40;
+  } else {
+    return 200 * Math.random() + 480;
+  }
+}
 
 /*-------------------------------------------------------------------*/
 
@@ -78,7 +96,7 @@ var rightStartPositions = [125,175,625, 650];
     
     //initialize a new Rock with a random position
     var obstacle = new obstacleMakerFunction(
-      $container.height() * Math.random(),
+      randomRockPosition(),
       $container.width() * Math.random()
     );
 
@@ -120,15 +138,27 @@ var rightStartPositions = [125,175,625, 650];
 /*-------------------------------------------------------------------*/
 /*--------------------Frogger Movement ------------------------------*/
 
-  $('body').keydown(function(event){
-    if(event.which === 37 ){
-      frogger.move('left');
-    } else if (event.which === 38){
-      frogger.move('up');
-    } else if(event.which === 39){
-      frogger.move('right');
-    } else if(event.which === 40){
-      frogger.move('down');
+  $('body').keyup(function(event){
+    if (frogger.isAlive) {
+      if(event.which === 37 ){
+        frogger.move('left');
+      } else if (event.which === 38){
+        frogger.move('up');
+      } else if(event.which === 39){
+        frogger.move('right');
+      } else if(event.which === 40){
+        frogger.move('down');
+      }
+
+      if((frogger.top < 480 && frogger.left < 255 && frogger.top > 240) || 
+        (frogger.top < 480 && frogger.top > 240 && frogger.left < 735 && frogger.left > 345) || 
+        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) {
+        gameOver();
+      }
+
+      if(frogger.top === 0){
+        $('.gameover.win').show();
+      }
     }
   });
 
@@ -150,7 +180,7 @@ var rightStartPositions = [125,175,625, 650];
         var distance = checkDistance(topObstacle + 30, leftObstacle + 20);
 
         if(distance < 30){
-          console.log('collision');
+          gameOver();
         } 
       }
   }, 30);

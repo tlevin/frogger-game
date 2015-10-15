@@ -3,6 +3,7 @@ var Frogger = function(top, left) {
   this.$obstacleNode.addClass('frogger');
   this.left = left;
   this.top = top;
+  this.isAlive = true;
 };
 
 Frogger.prototype = Object.create(Obstacle.prototype);
