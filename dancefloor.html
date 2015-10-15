@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Object Dance Party</title>
+    <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script src="lib/jquery.js"></script>
     <script src="src/obstacle.js"></script>
@@ -10,9 +11,7 @@
     <script src='src/frogger.js'></script>
   </head>
   <body>
-    <div class="topbar">
-      <span class="title">Frogger!</span>
-    </div>
+    <div class='topbar'></div>
     <div class="container">
       <div class="gameover lose">GAME OVER!
       </div>
@@ -20,8 +19,9 @@
         <div class='frogWin'></div>
       </div>
       <div class='menubar'>
-        <a href="#" class="addRock" data-obstacle-maker-name="RockObstacle">add a rock</a>
-        <a href="#" class="addVehicle" data-vehicle-maker-name="Vehicle">add a vehicle</a>
+        <div class="button addRock" data-obstacle-maker-name="RockObstacle">add a rock</div>
+        <div class="button addVehicle" data-vehicle-maker-name="Vehicle">add a vehicle</div>   
+        <div class="button title">Frogger!</div>
       </div>
     </div>
 
