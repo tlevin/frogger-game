@@ -51,3 +51,12 @@ body, a:link, a:visited, a:active{
   transform: scaleX(-1);
   filter: FlipH;
 }
+.road {
+  position: absolute;
+  width: 1035px;
+  height: 313px;
+  top: -30px;
+  left: 0;
+  background-image: url('img/road.jpg');
+  transform: scale(1.35, 0.7);
+}
