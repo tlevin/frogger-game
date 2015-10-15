@@ -13,7 +13,7 @@ body, a:link, a:visited, a:active{
 .container {
   height: 750px;
   width: 1200px;
-  background-color: lightblue;
+  background-image: url('img/gamebackground.png');
 }
 
 .title, .addDancerButton{
