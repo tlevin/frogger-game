@@ -111,6 +111,9 @@ body, a:link, a:visited, a:active{
   width: 200px;
   height: 200px;
 }
+span {
+  font-weight: bold;
+}
 
 .spin {
     -webkit-animation-name: spin;
