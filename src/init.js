@@ -21,12 +21,11 @@ var $topBar = $('.topbar');
 var $menuBar = $('.menubar');
 var $gameOverScreen = $('.gameover.lose');
 var $gameWonScreen = $('.gameover.win');
-var $frogGif = ('.frogWin');
+var $frogGif = $('.frogWin');
 var $countdown = $('.countdown');
 var $nightmareMode = $('.nightmareMode');
 
 /*------------------------------------VARIABLE DEFINITIONS-------------------------------*/
-
 var leftStartPositions = [30, 75, 500, 55];
 var rightStartPositions = [125,175,625, 650];
 var currentCount = 9;
@@ -67,7 +66,7 @@ var gameWon = function(){
   $menuBar.hide();
   $frogGif.css({
     'background-image': 'url(' + frogWin[Math.floor(Math.random()*frogWin.length)] + ')'
-  })
+  });
   frogger.hasWon = true;
 };
 
@@ -182,14 +181,13 @@ $playAgainButton.on('click', function(){
   var countDown = setInterval(function(){
     $countdown.text(''+currentCount);
     currentCount--;
-    console.log(currentCount);
     if(currentCount === -1){
       clearInterval(countDown);
       $countdown.delay(1000).hide()
     }
   }, 1000)
 
-  //initialize 30 cars to game
+  // initialize 30 cars to game
   var initialCars = setInterval(function(){
     makeCar()
     countCars++;

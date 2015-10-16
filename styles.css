@@ -1,25 +1,27 @@
+/*------------------------------------General Environment-----------------------------------------*/
+
 body, html{
   height: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
 body{
   margin: 0px;
   background-color:#444;
   font-size: 18px;
   font-family: 'Indie Flower', cursive;
 }
-body, a:link, a:visited, a:active{
-  color: lightblue;
+
+
+/*------------------------------------Board-----------------------------------------*/
+
+.container {
+  height: 750px;
+  width: 1200px;
+  background-image: url('img/gamebackground.jpg');
 }
-.countdown {
-  color: red;
-  font-size: 220px;
-  position: absolute;
-  text-align: center;
-  top: 250px;
-  left: 500px;
-}
+
 .clearRight {
   height: 1000px;
   width: 500px;
@@ -30,18 +32,7 @@ body, a:link, a:visited, a:active{
   margin: 0;
   z-index: 1;
 }
-.resultWindow {
-  background-color: white;
-  height: 100%;
-  width: 100%;
-  display: none;
-}
 
-.container {
-  height: 750px;
-  width: 1200px;
-  background-image: url('img/gamebackground.jpg');
-}
 .topbar{
   height:32px;
   width: 1200px;
@@ -49,31 +40,7 @@ body, a:link, a:visited, a:active{
   transform: scale(1, 1.25);
 }
 
-.rock{
-  height: 40px;
-  width: 40px;
-  background-image: url('img/rock.png');
-  position:absolute;
-}
 
-.vehicle{
- height: 40px;
-  width: 80px;
-  background-image: url('img/car.gif');
-  position:absolute;
-}
-
-.frogger {
-  position:absolute;
-  z-index: 1;
-  height: 37px;
-  width: 40px;
-  background-image: url('img/frogger.gif');
-}
-.flipCar {
-  transform: scaleX(-1);
-  filter: FlipH;
-}
 .menubar {
   position: absolute;
   top: 735px;
@@ -101,6 +68,50 @@ body, a:link, a:visited, a:active{
   cursor: default;
   background-color: #AA7939;
   border: 2px solid #553100;
+}
+
+/*------------------------------------Objects-----------------------------------------*/
+
+.rock{
+  height: 40px;
+  width: 40px;
+  background-image: url('img/rock.png');
+  position:absolute;
+}
+
+.vehicle{
+ height: 40px;
+  width: 80px;
+  background-image: url('img/car.gif');
+  position:absolute;
+}
+
+.flipCar {
+  transform: scaleX(-1);
+  filter: FlipH;
+}
+
+.frogger {
+  position:absolute;
+  z-index: 1;
+  height: 37px;
+  width: 40px;
+  background-image: url('img/frogger.gif');
+}
+/*------------------------------------Results-----------------------------------------*/
+.resultWindow {
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  display: none;
+}
+.countdown {
+  color: red;
+  font-size: 220px;
+  position: absolute;
+  text-align: center;
+  top: 250px;
+  left: 500px;
 }
 .gameover {
   position: absolute; 
