@@ -159,7 +159,11 @@ $playAgainButton.on('click', function(){
 
       if((frogger.top < 480 && frogger.left < 255 && frogger.top > 240) ||
         (frogger.top < 480 && frogger.top > 240 && frogger.left < 735 && frogger.left > 345) ||
-        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) { gameOver(); }
+        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) { 
+        frogger.$obstacleNode.animate({
+          'left': '1400px'}, 1000);
+        setTimeout(gameOver, 1000); 
+      }
 
       if(frogger.top < 10 && !frogger.hasWon) { gameWon(); }
     }
