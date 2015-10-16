@@ -15,7 +15,7 @@ var $container = $('.container');
 var $addRockButton = $('.addRock');
 var $addVehicleButton = $('.addVehicle');
 var $addFroggerButton = $('.addFrogger');
-var $playAgainButton = $('.playAgain')
+var $playAgainButton = $('.playAgain');
 var $resultWindow = $('.resultWindow');
 var $topBar = $('.topbar');
 var $menuBar = $('.menubar');
@@ -31,6 +31,19 @@ var rightStartPositions = [125,175,625, 650];
 var currentCount = 9;
 var countCars = 0;
 var nightmareMode;
+
+/*------------------------------------AUDIO-------------------------------*/
+var hop = new Audio('mp3/hop.mp3');
+var theme = new Audio('mp3/theme.mp3');
+var hit = new Audio('mp3/hit.mp3');
+var water = new Audio('mp3/water.mp3');
+var gameStart = new Audio('mp3/gameStart.mp3');
+var playHop = function(){
+  hop.play();
+};
+theme.autoplay = true;
+theme.volume = 0.3;
+theme.loop = true;
 
 /*------------------------------------FUNCTIONS-----------------------------------------*/
 var directionVehicle = function(){
@@ -53,6 +66,7 @@ var showResult = function(){
 };
 
 var gameOver = function(){
+  theme.pause();
   showResult();
   $gameOverScreen.show();
   $menuBar.hide();
@@ -86,10 +100,10 @@ var makeCar = function(){
   );
 
   if(vehicle.direction === 'left'){
-    vehicle.left = Math.random()*700 + 500
+    vehicle.left = Math.random()*700 + 500;
     vehicle.top = leftStartPositions[Math.floor(Math.random()*leftStartPositions.length)];
   } else {
-    vehicle.left = Math.random()*700
+    vehicle.left = Math.random()*700;
     vehicle.$obstacleNode.addClass('flipCar');
     vehicle.top = rightStartPositions[Math.floor(Math.random()*rightStartPositions.length)];
   }
@@ -117,7 +131,7 @@ var makeCar = function(){
 /*------------------------------------EVENT HANDLERS------------------------------------*/
 
 $playAgainButton.on('click', function(){
-  window.location.reload()
+  window.location.reload();
 });
 
   /*------------Add Vehicle Button--------------*/
@@ -127,7 +141,7 @@ $playAgainButton.on('click', function(){
   /*------------Nightmare Mode Button-----------*/
   $nightmareMode.on('click', function(){
     nightmareMode = setInterval(function(){
-      makeCar()
+      makeCar();
     }, 500);
   });
 
@@ -149,20 +163,26 @@ $playAgainButton.on('click', function(){
     if (frogger.isAlive && !frogger.hasWon && frogger.canStart) {
       if (event.which === 37) {
         frogger.move('left');
+        playHop();
       } else if (event.which === 38){
         frogger.move('up');
+        playHop();
       } else if(event.which === 39){
         frogger.move('right');
+        playHop();
       } else if(event.which === 40){
         frogger.move('down');
+        playHop();
       }
+      
 
       if((frogger.top < 480 && frogger.left < 255 && frogger.top > 240) ||
         (frogger.top < 480 && frogger.top > 240 && frogger.left < 735 && frogger.left > 345) ||
-        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) { 
+        (frogger.top < 480 && frogger.top > 240 && frogger.left > 825)) {
+        water.play();
         frogger.$obstacleNode.animate({
           'left': '1400px'}, 1000);
-        setTimeout(gameOver, 1000); 
+        setTimeout(gameOver, 1000);
       }
 
       if(frogger.top < 10 && !frogger.hasWon) { gameWon(); }
@@ -172,6 +192,9 @@ $playAgainButton.on('click', function(){
 
 
 /*------------------------------------APP START-----------------------------------------*/
+
+  /*------------Start Music--------------*/
+  theme.play()
 
   /*------------Add Frogger--------------*/
   //initialize Frogger
@@ -186,14 +209,15 @@ $playAgainButton.on('click', function(){
     $countdown.text(''+currentCount);
     currentCount--;
     if(currentCount === -1){
+      gameStart.play();
       clearInterval(countDown);
-      $countdown.delay(1000).hide()
+      $countdown.delay(1000).hide();
     }
-  }, 1000)
+  }, 1000);
 
   // initialize 30 cars to game
   var initialCars = setInterval(function(){
-    makeCar()
+    makeCar();
     countCars++;
     if(countCars > 30){
       frogger.canStart = true;
@@ -208,7 +232,10 @@ $playAgainButton.on('click', function(){
     var leftObstacle = +obstacles[i].$obstacleNode.css('left').slice(0,-2);
     var distance = checkDistance(topObstacle + 30, leftObstacle + 20);
 
-    if(distance < 30){ gameOver(); }
+    if(distance < 30){
+      clearInterval(collisionInterval);
+      hit.play();
+      gameOver(); }
 
     }
   }, 30);
