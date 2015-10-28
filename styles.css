@@ -19,7 +19,7 @@ body{
 .container {
   height: 750px;
   width: 1200px;
-  background-image: url('img/gamebackground.jpg');
+  background-image: url('img/gameBackground.jpg');
 }
 
 .clearRight {
